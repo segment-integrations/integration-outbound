@@ -1,19 +1,20 @@
+'use strict';
 
 var Test = require('segmentio-integration-tester');
 var Outbound = require('..');
 
-describe('Outbound', function(){
+describe('Outbound', function() {
   var outbound;
   var settings;
   var test;
 
-  beforeEach(function(){
+  beforeEach(function() {
     settings = { apiKey: '11dd737337d61bded96493074508ce8b' };
     outbound = new Outbound(settings);
     test = Test(outbound, __dirname);
   });
 
-  it('should have correct settings', function(){
+  it('should have correct settings', function() {
     test
       .name('Outbound')
       .channels(['server', 'mobile'])
@@ -23,69 +24,68 @@ describe('Outbound', function(){
       .retries(2);
   });
 
-  describe('.validate()', function(){
+  describe('.validate()', function() {
     var msg;
 
-    beforeEach(function(){
+    beforeEach(function() {
       msg = { userId: 'user-id' };
     });
 
-    it('should be invalid when .apiKey is missing', function(){
+    it('should be invalid when .apiKey is missing', function() {
       delete settings.apiKey;
       test.invalid(msg, settings);
     });
 
-    it('should be invalid when .userId is missing', function(){
+    it('should be invalid when .userId is missing', function() {
       delete msg.userId;
       test.invalid(msg, settings);
     });
 
-    it('should be valid when settings are complete and .userId is given', function(){
+    it('should be valid when settings are complete and .userId is given', function() {
       test.valid(msg, settings);
     });
   });
 
-  describe('mapper', function(){
-    describe('track', function(){
-      it('should map basic track', function(){
+  describe('mapper', function() {
+    describe('track', function() {
+      it('should map basic track', function() {
         test.maps('track-basic');
       });
     });
 
-    describe('identify', function(){
-      it('should map basic identify and remove `phone`, `email` from traits', function(){
+    describe('identify', function() {
+      it('should map basic identify and remove `phone`, `email` from traits', function() {
         test.maps('identify-basic');
       });
 
-      it('should map test for android token ', function(){
+      it('should map test for android token ', function() {
         test.maps('identify-android');
       });
 
-      it('should map test for ios token ', function(){
+      it('should map test for ios token ', function() {
         test.maps('identify-ios');
       });
 
-      it('should map test for ios token ', function(){
+      it('should map test for ios token ', function() {
         test.maps('identify-production');
       });
     });
 
-    describe('group', function(){
-      it('should map basic group', function(){
+    describe('group', function() {
+      it('should map basic group', function() {
         test.maps('group-basic');
       });
     });
 
-    describe('alias', function(){
-      it('should map basic alias', function(){
+    describe('alias', function() {
+      it('should map basic alias', function() {
         test.maps('alias-basic');
       });
     });
-
   });
 
-  describe('.track()', function(){
-    it('should track successfully', function(done){
+  describe('.track()', function() {
+    it('should track successfully', function(done) {
       var json = test.fixture('track-basic');
       test
         .track(json.input)
@@ -93,7 +93,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should error on invalid request', function(done){
+    it('should error on invalid request', function(done) {
       test
         .set({ apiKey: 'x' })
         .track({ event: 'event' })
@@ -101,8 +101,8 @@ describe('Outbound', function(){
     });
   });
 
-  describe('.identify()', function(){
-    it('should identify successfully', function(done){
+  describe('.identify()', function() {
+    it('should identify successfully', function(done) {
       var json = test.fixture('identify-basic');
       test
         .identify(json.input)
@@ -110,7 +110,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should identify with an android device token', function(done){
+    it('should identify with an android device token', function(done) {
       var json = test.fixture('identify-android');
       test
         .identify(json.input)
@@ -118,7 +118,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should identify with an ios device token', function(done){
+    it('should identify with an ios device token', function(done) {
       var json = test.fixture('identify-ios');
       test
         .identify(json.input)
@@ -126,7 +126,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should error on invalid request', function(done){
+    it('should error on invalid request', function(done) {
       test
         .set({ apiKey: 'x' })
         .track({ event: 'event' })
@@ -135,9 +135,8 @@ describe('Outbound', function(){
     });
   });
 
-  describe('.group()', function(){
-
-    it('should group successfully', function(done){
+  describe('.group()', function() {
+    it('should group successfully', function(done) {
       var json = test.fixture('group-basic');
       test
         .group(json.input)
@@ -145,7 +144,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should error on invalid request', function(done){
+    it('should error on invalid request', function(done) {
       test
         .set({ apiKey: 'x' })
         .track({ event: 'event' })
@@ -154,8 +153,8 @@ describe('Outbound', function(){
     });
   });
 
-  describe('.alias()', function(){
-    it('should alias successfully', function(done){
+  describe('.alias()', function() {
+    it('should alias successfully', function(done) {
       var json = test.fixture('alias-basic');
       test
         .alias(json.input)
@@ -163,7 +162,7 @@ describe('Outbound', function(){
         .expects(200, done);
     });
 
-    it('should error on invalid request', function(done){
+    it('should error on invalid request', function(done) {
       test
         .set({ apiKey: 'x' })
         .track({ event: 'event' })
