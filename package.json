@@ -1,6 +1,6 @@
 {
   "name": "@segment/integration-outbound",
-  "version": "1.6.2",
+  "version": "1.6.1",
   "description": "Outbound server-side integration",
   "author": "Segment <friends@segment.com>",
   "repository": {
